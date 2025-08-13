@@ -1,0 +1,56 @@
+// client/src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import BuyerDashboard from './pages/BuyerDashboard';
+import SellerDashboard from './pages/SellerDashboard';
+import ProductDetails from './pages/ProductDetails';
+import AddProduct from './pages/AddProduct';
+import PrivateRoute from './components/PrivateRoute';
+import './App.css';
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Navbar />
+          <div className="container">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/products/:id" element={<ProductDetails />} />
+              
+              <Route path="/buyer" element={
+                <PrivateRoute>
+                  <BuyerDashboard />
+                </PrivateRoute>
+              } />
+              
+              <Route path="/seller" element={
+                <PrivateRoute>
+                  <SellerDashboard />
+                </PrivateRoute>
+              } />
+              
+              <Route path="/add-product" element={
+                <PrivateRoute>
+                  <AddProduct />
+                </PrivateRoute>
+              } />
+              
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </AuthProvider>
+  );
+}
+
+export default App;
