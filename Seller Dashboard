@@ -1,0 +1,119 @@
+// client/src/pages/SellerDashboard.js
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+const SellerDashboard = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchMyProducts();
+  }, []);
+
+  const fetchMyProducts = async () => {
+    try {
+      const response = await axios.get('/api/products/seller/my-products');
+      setProducts(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      setLoading(false);
+    }
+  };
+
+  const deleteProduct = async (productId) => {
+    if (window.confirm('Are you sure you want to delete this product?')) {
+      try {
+        await axios.delete(`/api/products/${productId}`);
+        setProducts(products.filter(product => product._id !== productId));
+        alert('Product deleted successfully');
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('Error deleting product');
+      }
+    }
+  };
+
+  const updateStatus = async (productId, status) => {
+    try {
+      await axios.put(`/api/products/${productId}`, { status });
+      setProducts(products.map(product => 
+        product._id === productId ? { ...product, status } : product
+      ));
+      alert('Product status updated');
+    } catch (error) {
+      console.error('Error updating product:', error);
+      alert('Error updating product status');
+    }
+  };
+
+  if (loading) {
+    return <div className="loading">Loading your products...</div>;
+  }
+
+  return (
+    <div className="seller-dashboard">
+      <div className="dashboard-header">
+        <h1>My Products</h1>
+        <Link to="/add-product" className="btn btn-primary">Add New Product</Link>
+      </div>
+
+      {products.length > 0 ? (
+        <div className="products-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map(product => (
+                <tr key={product._id}>
+                  <td>{product.title}</td>
+                  <td>{product.category}</td>
+                  <td>৳{product.price}</td>
+                  <td>
+                    <select
+                      value={product.status}
+                      onChange={(e) => updateStatus(product._id, e.target.value)}
+                      className={`status-select ${product.status}`}
+                    >
+                      <option value="available">Available</option>
+                      <option value="pending">Pending</option>
+                      <option value="sold">Sold</option>
+                    </select>
+                  </td>
+                  <td>{new Date(product.createdAt).toLocaleDateString()}</td>
+                  <td>
+                    <div className="actions">
+                      <Link to={`/products/${product._id}`} className="btn btn-sm btn-info">View</Link>
+                      <button
+                        onClick={() => deleteProduct(product._id)}
+                        className="btn btn-sm btn-danger"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="no-products">
+          <p>You haven't listed any products yet.</p>
+          <Link to="/add-product" className="btn btn-primary">Add Your First Product</Link>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SellerDashboard;
