@@ -38,42 +38,6 @@ A digital marketplace built with the MERN stack specifically for CUET students t
 - **Axios** - HTTP client
 - **Context API** - State management
 
-## Project Structure
-
-```
-cuet-marketplace/
-├── server.js                 # Backend entry point
-├── package.json             # Backend dependencies
-├── models/                  # Database models
-│   ├── User.js             # User model
-│   └── Product.js          # Product model
-├── routes/                  # API routes
-│   ├── auth.js             # Authentication routes
-│   └── products.js         # Product routes
-├── middleware/              # Custom middleware
-│   └── auth.js             # JWT authentication middleware
-└── client/                  # React frontend
-    ├── package.json        # Frontend dependencies
-    ├── public/             # Static files
-    ├── src/
-    │   ├── App.js          # Main app component
-    │   ├── App.css         # Global styles
-    │   ├── context/        # React context
-    │   │   └── AuthContext.js
-    │   ├── components/     # Reusable components
-    │   │   ├── Navbar.js
-    │   │   ├── ProductCard.js
-    │   │   └── PrivateRoute.js
-    │   └── pages/          # Page components
-    │       ├── Home.js
-    │       ├── Login.js
-    │       ├── Register.js
-    │       ├── BuyerDashboard.js
-    │       ├── SellerDashboard.js
-    │       ├── AddProduct.js
-    │       └── ProductDetails.js
-```
-
 ## Installation & Setup
 
 ### Prerequisites
