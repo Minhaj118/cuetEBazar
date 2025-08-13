@@ -1,4 +1,4 @@
-# CUET Marketplace
+# CUETE-Bazar
 
 A digital marketplace built with the MERN stack specifically for CUET students to buy and sell products within the campus community.
 
